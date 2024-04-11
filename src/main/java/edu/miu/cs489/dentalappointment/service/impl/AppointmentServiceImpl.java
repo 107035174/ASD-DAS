@@ -3,10 +3,13 @@ package edu.miu.cs489.dentalappointment.service.impl;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.stereotype.Service;
+
 import edu.miu.cs489.dentalappointment.dao.AppointmentDao;
 import edu.miu.cs489.dentalappointment.model.Appointment;
 import edu.miu.cs489.dentalappointment.service.AppointmentService;
 
+@Service
 public class AppointmentServiceImpl implements AppointmentService {
     private AppointmentDao appointmentDao;
 
@@ -18,8 +21,8 @@ public class AppointmentServiceImpl implements AppointmentService {
         return appointmentDao.save(appointment);
     }
 
-    public List<Appointment> addAll(List<Appointment> appointments) {
-        return appointmentDao.saveAll(appointments);
+    public List<Appointment> getAll() {
+        return appointmentDao.findAll();
     }
 
     public Optional<Appointment> get(Integer id) {
@@ -37,5 +40,9 @@ public class AppointmentServiceImpl implements AppointmentService {
 
             appointmentDao.save(existing);
         }
+    }
+
+    public void delete(Integer id) {
+        appointmentDao.deleteById(id);
     }
 }

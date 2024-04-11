@@ -1,0 +1,9 @@
+Requirements for Dental appointments system:
+1. Allow users to sign-in.
+2. Office Manager can enroll new patients.
+3. Patients can request appointment.
+4. Office Manager can manage(add, remove, update) appointment.
+5. Dentists can view their appointments.
+6. Patient can view their appointments and request to cancel or change their appointments.
+7. Dentist cannot book more than 5 appointments in a week.
+8. Patients cannot request to book appointments if they have unpaid bill.

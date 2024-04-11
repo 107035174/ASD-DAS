@@ -3,10 +3,13 @@ package edu.miu.cs489.dentalappointment.service.impl;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.stereotype.Service;
+
 import edu.miu.cs489.dentalappointment.dao.SurgeryDao;
 import edu.miu.cs489.dentalappointment.model.Surgery;
 import edu.miu.cs489.dentalappointment.service.SurgeryService;
 
+@Service
 public class SurgeryServiceImpl implements SurgeryService {
     private SurgeryDao surgeryDao;
 

@@ -1,6 +1,5 @@
 package edu.miu.cs489.dentalappointment.model;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 import jakarta.persistence.Entity;

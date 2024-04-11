@@ -1,6 +1,7 @@
 package edu.miu.cs489.dentalappointment.model;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -20,8 +21,8 @@ public class Appointment {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer appointmentId;
-    private LocalDate createdDate;
-    private LocalDate scheduledDate;
+    private LocalDateTime createdDate;
+    private LocalDateTime scheduledDate;
     @ManyToOne
     @JoinColumn(name = "patientId")
     private Patient patient;

@@ -1,19 +1,19 @@
 package edu.miu.cs489.dentalappointment.service;
 
 import java.util.List;
-import java.util.Optional;
 
 import edu.miu.cs489.dentalappointment.dto.AddressDto;
+import edu.miu.cs489.dentalappointment.exception.AddressNotFoundException;
 import edu.miu.cs489.dentalappointment.model.Address;
 
 public interface AddressService {
-    public Address add(Address address);
+    public AddressDto add(AddressDto address);
 
     public List<AddressDto> getAll();
 
-    public Optional<Address> get(Integer id);
+    public Address get(Integer id) throws AddressNotFoundException;
 
-    public void update(Integer id, Address address);
+    public Address update(Integer id, Address address) throws AddressNotFoundException;
 
     public void delete(Integer id);
 

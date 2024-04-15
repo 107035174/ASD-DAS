@@ -102,8 +102,5 @@ public class DentalappointmentApplication implements CommandLineRunner {
 		return surgeryService.add(new Surgery(null, name, phoneNumber, address, new ArrayList<>()));
 	}
 
-	private void printAppointments() {
-		
-	}
 
 }

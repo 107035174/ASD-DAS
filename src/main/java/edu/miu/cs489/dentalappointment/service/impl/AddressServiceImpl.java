@@ -3,18 +3,22 @@ package edu.miu.cs489.dentalappointment.service.impl;
 import java.util.List;
 import java.util.Optional;
 
+import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
 import edu.miu.cs489.dentalappointment.dao.AddressDao;
+import edu.miu.cs489.dentalappointment.dto.AddressDto;
 import edu.miu.cs489.dentalappointment.model.Address;
 import edu.miu.cs489.dentalappointment.service.AddressService;
 
 @Service
 public class AddressServiceImpl implements AddressService {
     private AddressDao addressDao;
+    private ModelMapper modelMapper;
 
-    public AddressServiceImpl(AddressDao addressDao) {
+    public AddressServiceImpl(AddressDao addressDao, ModelMapper modelMapper) {
         this.addressDao = addressDao;
+        this.modelMapper = modelMapper;
     }
 
     @Override
@@ -23,8 +27,11 @@ public class AddressServiceImpl implements AddressService {
     }
 
     @Override
-    public List<Address> getAll() {
-        return addressDao.findAll();
+    public List<AddressDto> getAll() {
+        return addressDao.findAll()
+                .stream()
+                .map(a -> modelMapper.map(a, AddressDto.class))
+                .toList();
     }
 
     @Override
@@ -50,5 +57,4 @@ public class AddressServiceImpl implements AddressService {
     public void delete(Integer id) {
         addressDao.deleteById(id);
     }
-
 }

@@ -3,18 +3,22 @@ package edu.miu.cs489.dentalappointment.service.impl;
 import java.util.List;
 import java.util.Optional;
 
+import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
 import edu.miu.cs489.dentalappointment.dao.PatientDao;
+import edu.miu.cs489.dentalappointment.dto.PatientDto;
 import edu.miu.cs489.dentalappointment.model.Patient;
 import edu.miu.cs489.dentalappointment.service.PatientService;
 
 @Service
 public class PatientServiceImpl implements PatientService {
     private PatientDao patientDao;
+    private ModelMapper modelMapper;
 
-    public PatientServiceImpl(PatientDao patientDao) {
+    public PatientServiceImpl(PatientDao patientDao, ModelMapper modelMapper) {
         this.patientDao = patientDao;
+        this.modelMapper = modelMapper;
     }
 
     @Override
@@ -23,8 +27,9 @@ public class PatientServiceImpl implements PatientService {
     }
 
     @Override
-    public List<Patient> getAll(List<Patient> patients) {
-        return patientDao.saveAll(patients);
+    public List<PatientDto> getAll() {
+        return patientDao.findAll()
+                .stream().map(p -> modelMapper.map(p, PatientDto.class)).toList();
     }
 
     @Override

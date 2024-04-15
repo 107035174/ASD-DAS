@@ -3,12 +3,13 @@ package edu.miu.cs489.dentalappointment.service;
 import java.util.List;
 import java.util.Optional;
 
+import edu.miu.cs489.dentalappointment.dto.SurgeryDto;
 import edu.miu.cs489.dentalappointment.model.Surgery;
 
 public interface SurgeryService {
     public Surgery add(Surgery surgery);
 
-    public List<Surgery> getAll();
+    public List<SurgeryDto> getAll();
 
     public Optional<Surgery> get(Integer id);
 

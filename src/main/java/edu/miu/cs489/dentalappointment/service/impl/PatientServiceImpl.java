@@ -7,6 +7,7 @@ import java.util.Optional;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
+import edu.miu.cs489.dentalappointment.dao.AddressDao;
 import edu.miu.cs489.dentalappointment.dao.PatientDao;
 import edu.miu.cs489.dentalappointment.dto.PatientDto;
 import edu.miu.cs489.dentalappointment.dto.PatientDto2;
@@ -18,16 +19,21 @@ import edu.miu.cs489.dentalappointment.service.PatientService;
 @Service
 public class PatientServiceImpl implements PatientService {
     private PatientDao patientDao;
+    private AddressDao addressDao;
     private ModelMapper modelMapper;
 
-    public PatientServiceImpl(PatientDao patientDao, ModelMapper modelMapper) {
+    public PatientServiceImpl(PatientDao patientDao, ModelMapper modelMapper, AddressDao addressDao) {
         this.patientDao = patientDao;
         this.modelMapper = modelMapper;
+        this.addressDao = addressDao;
     }
 
     @Override
     public PatientDto2 add(PatientDto2 patient) {
-        Patient savedPatient = patientDao.save(modelMapper.map(patient, Patient.class));
+        Address address = addressDao.save(modelMapper.map(patient.getMailingAddress(), Address.class));
+        Patient savedPatient = modelMapper.map(patient, Patient.class);
+        savedPatient.setMailingAddress(address);
+        patientDao.save(savedPatient);
         return modelMapper.map(savedPatient, PatientDto2.class);
     }
 

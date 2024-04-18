@@ -26,7 +26,10 @@ public class SurgeryServiceImpl implements SurgeryService {
 
     @Override
     public SurgeryDto2 add(SurgeryDto2 surgery) {
-        Surgery savedSurgery = surgeryDao.save(modelMapper.map(surgery, Surgery.class));
+        Address address = modelMapper.map(surgery.getAddress(), Address.class);
+        Surgery savedSurgery = modelMapper.map(surgery, Surgery.class);
+        savedSurgery.setAddress(address);
+        surgeryDao.save(savedSurgery);
         return modelMapper.map(savedSurgery, SurgeryDto2.class);
     }
 

@@ -1,19 +1,19 @@
 package edu.miu.cs489.dentalappointment.service;
 
 import java.util.List;
-import java.util.Optional;
 
 import edu.miu.cs489.dentalappointment.dto.PatientDto;
+import edu.miu.cs489.dentalappointment.exception.PatientNotFoundException;
 import edu.miu.cs489.dentalappointment.model.Patient;
 
 public interface PatientService {
-    public Patient add(Patient patient);
+    public PatientDto add(PatientDto patient);
 
     public List<PatientDto> getAll();
 
-    public Optional<Patient> get(Integer id);
+    public Patient get(Integer id) throws PatientNotFoundException;
 
-    public void update(Integer id, Patient patient);
+    public PatientDto update(Integer id, PatientDto patient) throws PatientNotFoundException;
 
     public void delete(Integer id);
 }

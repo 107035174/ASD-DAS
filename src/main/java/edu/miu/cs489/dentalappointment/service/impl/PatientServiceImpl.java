@@ -8,6 +8,8 @@ import org.springframework.stereotype.Service;
 
 import edu.miu.cs489.dentalappointment.dao.PatientDao;
 import edu.miu.cs489.dentalappointment.dto.PatientDto;
+import edu.miu.cs489.dentalappointment.exception.PatientNotFoundException;
+import edu.miu.cs489.dentalappointment.model.Address;
 import edu.miu.cs489.dentalappointment.model.Patient;
 import edu.miu.cs489.dentalappointment.service.PatientService;
 
@@ -22,8 +24,9 @@ public class PatientServiceImpl implements PatientService {
     }
 
     @Override
-    public Patient add(Patient patient) {
-        return patientDao.save(patient);
+    public PatientDto add(PatientDto patient) {
+        Patient savedPatient = patientDao.save(modelMapper.map(patient, Patient.class));
+        return modelMapper.map(savedPatient, PatientDto.class);
     }
 
     @Override
@@ -33,26 +36,29 @@ public class PatientServiceImpl implements PatientService {
     }
 
     @Override
-    public Optional<Patient> get(Integer id) {
-        return patientDao.findById(id);
+    public Patient get(Integer id) throws PatientNotFoundException {
+        return patientDao.findById(id).orElseThrow(
+                () -> new PatientNotFoundException(String.format("Patient with ID, %d, is not found", id)));
     }
 
     @Override
-    public void update(Integer id, Patient patient) {
+    public PatientDto update(Integer id, PatientDto patient) throws PatientNotFoundException {
         Optional<Patient> temp = patientDao.findById(id);
         if (temp.isPresent()) {
             Patient existing = temp.get();
 
-            existing.setAppointments(patient.getAppointments());
-            existing.setDob(patient.getDob());
-            existing.setEmail(patient.getEmail());
-            existing.setFirstName(patient.getFirstName());
-            existing.setLastName(patient.getLastName());
-            existing.setMailingAddress(patient.getMailingAddress());
-            existing.setPhoneNumber(patient.getPhoneNumber());
+            existing.setFirstName(patient.firstName());
+            existing.setLastName(patient.lastName());
+            existing.setMailingAddress(modelMapper.map(patient.mailingAddress(), Address.class));
+            existing.setPhoneNumber(patient.phoneNumber());
+            existing.setEmail(patient.email());
+            existing.setDob(patient.dob());
 
             patientDao.save(existing);
-        }
+
+            return modelMapper.map(existing, PatientDto.class);
+        } else
+            throw new PatientNotFoundException(String.format("Patient with ID, %d, is not found", id));
     }
 
     @Override

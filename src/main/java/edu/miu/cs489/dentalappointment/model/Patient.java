@@ -3,6 +3,7 @@ package edu.miu.cs489.dentalappointment.model;
 import java.time.LocalDate;
 import java.util.List;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -30,6 +31,6 @@ public class Patient {
     @JoinColumn(name = "addressId")
     private Address mailingAddress;
     private LocalDate dob;
-    @OneToMany(mappedBy = "patient")
+    @OneToMany(mappedBy = "patient", cascade = CascadeType.MERGE)
     private List<Appointment> appointments;
 }

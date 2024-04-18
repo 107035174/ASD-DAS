@@ -13,7 +13,7 @@ public interface AddressService {
 
     public Address get(Integer id) throws AddressNotFoundException;
 
-    public Address update(Integer id, Address address) throws AddressNotFoundException;
+    public AddressDto update(Integer id, AddressDto address) throws AddressNotFoundException;
 
     public void delete(Integer id);
 

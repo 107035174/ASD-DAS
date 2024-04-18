@@ -2,6 +2,7 @@ package edu.miu.cs489.dentalappointment.model;
 
 import java.util.List;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -26,6 +27,6 @@ public class Surgery {
     @OneToOne
     @JoinColumn(name = "addressId")
     private Address address;
-    @OneToMany(mappedBy = "surgery")
+    @OneToMany(mappedBy = "surgery", cascade = CascadeType.MERGE)
     private List<Appointment> appointments;
 }

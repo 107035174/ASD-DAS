@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import edu.miu.cs489.dentalappointment.dao.DentistDao;
 import edu.miu.cs489.dentalappointment.dto.DentistDto;
+import edu.miu.cs489.dentalappointment.exception.DentistNotFoundException;
 import edu.miu.cs489.dentalappointment.model.Dentist;
 import edu.miu.cs489.dentalappointment.service.DentistService;
 
@@ -22,8 +23,9 @@ public class DentistServiceImpl implements DentistService {
     }
 
     @Override
-    public Dentist add(Dentist dentist) {
-        return dentistDao.save(dentist);
+    public DentistDto add(DentistDto dentist) {
+        Dentist savedDentist = dentistDao.save(modelMapper.map(dentist, Dentist.class));
+        return modelMapper.map(savedDentist, DentistDto.class);
     }
 
     @Override
@@ -34,25 +36,28 @@ public class DentistServiceImpl implements DentistService {
     }
 
     @Override
-    public Optional<Dentist> get(Integer id) {
-        return dentistDao.findById(id);
+    public Dentist get(Integer id) throws DentistNotFoundException {
+        return dentistDao.findById(id).orElseThrow(
+                () -> new DentistNotFoundException(String.format("Dentist with ID, %d, is not found", id)));
     }
 
     @Override
-    public void update(Integer id, Dentist dentist) {
+    public DentistDto update(Integer id, DentistDto dentist) throws DentistNotFoundException {
         Optional<Dentist> temp = dentistDao.findById(id);
         if (temp.isPresent()) {
             Dentist existing = temp.get();
 
-            existing.setAppointments(dentist.getAppointments());
-            existing.setEmail(dentist.getEmail());
-            existing.setFirstName(dentist.getFirstName());
-            existing.setLastName(dentist.getLastName());
-            existing.setPhoneNumber(dentist.getPhoneNumber());
-            existing.setSpecialization(dentist.getSpecialization());
+            existing.setFirstName(dentist.firstName());
+            existing.setLastName(dentist.lastName());
+            existing.setPhoneNumber(dentist.phoneNumber());
+            existing.setEmail(dentist.email());
+            existing.setSpecialization(dentist.specialization());
 
             dentistDao.save(existing);
-        }
+
+            return modelMapper.map(existing, DentistDto.class);
+        } else
+            throw new DentistNotFoundException(String.format("Dentist with ID, %d, is not found", id));
     }
 
     @Override

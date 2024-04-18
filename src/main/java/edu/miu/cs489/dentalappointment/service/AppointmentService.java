@@ -1,19 +1,20 @@
 package edu.miu.cs489.dentalappointment.service;
 
 import java.util.List;
-import java.util.Optional;
 
 import edu.miu.cs489.dentalappointment.dto.AppointmentDto;
+import edu.miu.cs489.dentalappointment.dto.AppointmentDto2;
+import edu.miu.cs489.dentalappointment.exception.AppointmentNotFoundException;
 import edu.miu.cs489.dentalappointment.model.Appointment;
 
 public interface AppointmentService {
-    public Appointment add(Appointment appointment);
+    public AppointmentDto add(AppointmentDto appointment);
 
     public List<AppointmentDto> getAll();
 
-    public Optional<Appointment> get(Integer id);
+    public Appointment get(Integer id) throws AppointmentNotFoundException;
 
-    public void update(Integer id, Appointment appointment);
+    public AppointmentDto2 update(Integer id, AppointmentDto2 appointment) throws AppointmentNotFoundException;
 
     public void delete(Integer id);
 }

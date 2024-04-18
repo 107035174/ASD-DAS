@@ -20,7 +20,7 @@ public class Appointment {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer appointmentId;
-    private LocalDateTime createdDate;
+    private LocalDateTime createdDate = LocalDateTime.now();
     private LocalDateTime scheduledDate;
     @ManyToOne
     @JoinColumn(name = "patientId")

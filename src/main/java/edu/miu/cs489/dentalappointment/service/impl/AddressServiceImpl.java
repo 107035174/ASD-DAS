@@ -25,8 +25,7 @@ public class AddressServiceImpl implements AddressService {
     @Override
     public AddressDto add(AddressDto address) {
         Address savedAddress = addressDao.save(modelMapper.map(address, Address.class));
-        return new AddressDto(savedAddress.getAddressId(), savedAddress.getStreet(), savedAddress.getCity(),
-                savedAddress.getState(), savedAddress.getZip());
+        return modelMapper.map(savedAddress, AddressDto.class);
     }
 
     @Override
@@ -44,16 +43,17 @@ public class AddressServiceImpl implements AddressService {
     }
 
     @Override
-    public Address update(Integer id, Address address) throws AddressNotFoundException{
+    public AddressDto update(Integer id, AddressDto address) throws AddressNotFoundException {
         Optional<Address> temp = addressDao.findById(id);
         if (temp.isPresent()) {
             Address existing = temp.get();
-            existing.setCity(address.getCity());
-            existing.setState(address.getState());
-            existing.setStreet(address.getStreet());
-            existing.setZip(address.getZip());
+            existing.setCity(address.city());
+            existing.setState(address.state());
+            existing.setStreet(address.street());
+            existing.setZip(address.zip());
+            addressDao.save(existing);
 
-            return addressDao.save(existing);
+            return modelMapper.map(existing, AddressDto.class);
         } else {
             throw new AddressNotFoundException(String.format("address with ID, %d, is not found", id));
         }

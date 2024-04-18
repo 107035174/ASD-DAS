@@ -1,19 +1,19 @@
 package edu.miu.cs489.dentalappointment.service;
 
 import java.util.List;
-import java.util.Optional;
 
 import edu.miu.cs489.dentalappointment.dto.SurgeryDto;
+import edu.miu.cs489.dentalappointment.exception.SurgeryNotFoundException;
 import edu.miu.cs489.dentalappointment.model.Surgery;
 
 public interface SurgeryService {
-    public Surgery add(Surgery surgery);
+    public SurgeryDto add(SurgeryDto surgery);
 
     public List<SurgeryDto> getAll();
 
-    public Optional<Surgery> get(Integer id);
+    public Surgery get(Integer id) throws SurgeryNotFoundException;
 
-    public void update(Integer id, Surgery surgery);
+    public SurgeryDto update(Integer id, SurgeryDto surgery) throws SurgeryNotFoundException;
 
     public void delete(Integer id);
 }

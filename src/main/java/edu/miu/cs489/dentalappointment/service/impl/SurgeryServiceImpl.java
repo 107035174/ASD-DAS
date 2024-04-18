@@ -8,6 +8,8 @@ import org.springframework.stereotype.Service;
 
 import edu.miu.cs489.dentalappointment.dao.SurgeryDao;
 import edu.miu.cs489.dentalappointment.dto.SurgeryDto;
+import edu.miu.cs489.dentalappointment.exception.SurgeryNotFoundException;
+import edu.miu.cs489.dentalappointment.model.Address;
 import edu.miu.cs489.dentalappointment.model.Surgery;
 import edu.miu.cs489.dentalappointment.service.SurgeryService;
 
@@ -22,8 +24,9 @@ public class SurgeryServiceImpl implements SurgeryService {
     }
 
     @Override
-    public Surgery add(Surgery surgery) {
-        return surgeryDao.save(surgery);
+    public SurgeryDto add(SurgeryDto surgery) {
+        Surgery savedSurgery = surgeryDao.save(modelMapper.map(surgery, Surgery.class));
+        return modelMapper.map(savedSurgery, SurgeryDto.class);
     }
 
     @Override
@@ -33,23 +36,26 @@ public class SurgeryServiceImpl implements SurgeryService {
     }
 
     @Override
-    public Optional<Surgery> get(Integer id) {
-        return surgeryDao.findById(id);
+    public Surgery get(Integer id) throws SurgeryNotFoundException {
+        return surgeryDao.findById(id).orElseThrow(
+                () -> new SurgeryNotFoundException(String.format("Surgery with ID, %d, is not found", id)));
     }
 
     @Override
-    public void update(Integer id, Surgery surgery) {
+    public SurgeryDto update(Integer id, SurgeryDto surgery) throws SurgeryNotFoundException {
         Optional<Surgery> temp = surgeryDao.findById(id);
         if (temp.isPresent()) {
             Surgery existing = temp.get();
 
-            existing.setAddress(surgery.getAddress());
-            existing.setAppointments(surgery.getAppointments());
-            existing.setName(surgery.getName());
-            existing.setPhoneNumber(surgery.getPhoneNumber());
+            existing.setName(surgery.name());
+            existing.setPhoneNumber(surgery.phoneNumber());
+            existing.setAddress(modelMapper.map(surgery.address(), Address.class));
 
             surgeryDao.save(existing);
-        }
+
+            return modelMapper.map(existing, SurgeryDto.class);
+        } else
+            throw new SurgeryNotFoundException(String.format("Surgery with ID, %d, is not found", id));
     }
 
     @Override

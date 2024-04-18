@@ -1,5 +1,6 @@
 package edu.miu.cs489.dentalappointment.service.impl;
 
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 
@@ -32,7 +33,8 @@ public class PatientServiceImpl implements PatientService {
     @Override
     public List<PatientDto> getAll() {
         return patientDao.findAll()
-                .stream().map(p -> modelMapper.map(p, PatientDto.class)).toList();
+                .stream().sorted(Comparator.comparing(Patient::getLastName))
+                .map(p -> modelMapper.map(p, PatientDto.class)).toList();
     }
 
     @Override

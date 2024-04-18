@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import edu.miu.cs489.dentalappointment.dao.PatientDao;
 import edu.miu.cs489.dentalappointment.dto.PatientDto;
+import edu.miu.cs489.dentalappointment.dto.PatientDto2;
 import edu.miu.cs489.dentalappointment.exception.PatientNotFoundException;
 import edu.miu.cs489.dentalappointment.model.Address;
 import edu.miu.cs489.dentalappointment.model.Patient;
@@ -25,9 +26,9 @@ public class PatientServiceImpl implements PatientService {
     }
 
     @Override
-    public PatientDto add(PatientDto patient) {
+    public PatientDto2 add(PatientDto2 patient) {
         Patient savedPatient = patientDao.save(modelMapper.map(patient, Patient.class));
-        return modelMapper.map(savedPatient, PatientDto.class);
+        return modelMapper.map(savedPatient, PatientDto2.class);
     }
 
     @Override
@@ -38,9 +39,10 @@ public class PatientServiceImpl implements PatientService {
     }
 
     @Override
-    public Patient get(Integer id) throws PatientNotFoundException {
-        return patientDao.findById(id).orElseThrow(
-                () -> new PatientNotFoundException(String.format("Patient with ID, %d, is not found", id)));
+    public PatientDto get(Integer id) throws PatientNotFoundException {
+        return modelMapper.map(patientDao.findById(id).orElseThrow(
+                () -> new PatientNotFoundException(String.format("Patient with ID, %d, is not found", id))),
+                PatientDto.class);
     }
 
     @Override

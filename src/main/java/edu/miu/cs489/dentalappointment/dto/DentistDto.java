@@ -1,7 +1,5 @@
 package edu.miu.cs489.dentalappointment.dto;
 
-import java.util.List;
-
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -18,5 +16,4 @@ public class DentistDto {
         private String phoneNumber;
         private String email;
         private String specialization;
-        private List<AppointmentDto> appointments;
 }

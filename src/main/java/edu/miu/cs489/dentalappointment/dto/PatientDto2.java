@@ -1,5 +1,8 @@
 package edu.miu.cs489.dentalappointment.dto;
 
+import java.time.LocalDate;
+import java.util.List;
+
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -11,4 +14,11 @@ import lombok.Setter;
 @NoArgsConstructor
 public class PatientDto2 {
     private Integer patientId;
+    private String firstName;
+    private String lastName;
+    private String phoneNumber;
+    private String email;
+    private AddressDto mailingAddress;
+    private LocalDate dob;
+    private List<AppointmentDto> appointments;
 }

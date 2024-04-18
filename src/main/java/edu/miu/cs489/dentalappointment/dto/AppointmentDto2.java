@@ -15,7 +15,7 @@ public class AppointmentDto2 {
     private Integer appointmentId;
     private LocalDateTime createdDateTime;
     private LocalDateTime scheduledDateTime;
-    private DentistDto2 dentist;
-    private PatientDto2 patient;
-    private SurgeryDto2 surgery;
+    private DentistDto dentist;
+    private PatientDto patient;
+    private SurgeryDto surgery;
 }

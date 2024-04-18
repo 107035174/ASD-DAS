@@ -4,14 +4,13 @@ import java.util.List;
 
 import edu.miu.cs489.dentalappointment.dto.AddressDto;
 import edu.miu.cs489.dentalappointment.exception.AddressNotFoundException;
-import edu.miu.cs489.dentalappointment.model.Address;
 
 public interface AddressService {
     public AddressDto add(AddressDto address);
 
     public List<AddressDto> getAll();
 
-    public Address get(Integer id) throws AddressNotFoundException;
+    public AddressDto get(Integer id) throws AddressNotFoundException;
 
     public AddressDto update(Integer id, AddressDto address) throws AddressNotFoundException;
 

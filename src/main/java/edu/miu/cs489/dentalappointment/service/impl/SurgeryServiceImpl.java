@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import edu.miu.cs489.dentalappointment.dao.SurgeryDao;
 import edu.miu.cs489.dentalappointment.dto.SurgeryDto;
+import edu.miu.cs489.dentalappointment.dto.SurgeryDto2;
 import edu.miu.cs489.dentalappointment.exception.SurgeryNotFoundException;
 import edu.miu.cs489.dentalappointment.model.Address;
 import edu.miu.cs489.dentalappointment.model.Surgery;
@@ -24,9 +25,9 @@ public class SurgeryServiceImpl implements SurgeryService {
     }
 
     @Override
-    public SurgeryDto add(SurgeryDto surgery) {
+    public SurgeryDto2 add(SurgeryDto2 surgery) {
         Surgery savedSurgery = surgeryDao.save(modelMapper.map(surgery, Surgery.class));
-        return modelMapper.map(savedSurgery, SurgeryDto.class);
+        return modelMapper.map(savedSurgery, SurgeryDto2.class);
     }
 
     @Override
@@ -36,9 +37,10 @@ public class SurgeryServiceImpl implements SurgeryService {
     }
 
     @Override
-    public Surgery get(Integer id) throws SurgeryNotFoundException {
-        return surgeryDao.findById(id).orElseThrow(
-                () -> new SurgeryNotFoundException(String.format("Surgery with ID, %d, is not found", id)));
+    public SurgeryDto get(Integer id) throws SurgeryNotFoundException {
+        return modelMapper.map(surgeryDao.findById(id).orElseThrow(
+                () -> new SurgeryNotFoundException(String.format("Surgery with ID, %d, is not found", id))),
+                SurgeryDto.class);
     }
 
     @Override

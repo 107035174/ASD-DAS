@@ -1,7 +1,6 @@
 package edu.miu.cs489.dentalappointment.dto;
 
 import java.time.LocalDate;
-import java.util.List;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -20,5 +19,5 @@ public class PatientDto {
         private String email;
         private AddressDto mailingAddress;
         private LocalDate dob;
-        private List<AppointmentDto> appointments;
+
 }

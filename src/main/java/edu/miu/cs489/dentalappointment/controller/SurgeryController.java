@@ -4,8 +4,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import edu.miu.cs489.dentalappointment.dto.SurgeryDto;
+import edu.miu.cs489.dentalappointment.dto.SurgeryDto2;
 import edu.miu.cs489.dentalappointment.exception.SurgeryNotFoundException;
-import edu.miu.cs489.dentalappointment.model.Surgery;
 import edu.miu.cs489.dentalappointment.service.SurgeryService;
 
 import java.util.List;
@@ -29,12 +29,12 @@ public class SurgeryController {
     }
 
     @PostMapping("/add")
-    public ResponseEntity<SurgeryDto> addSurgery(@RequestBody SurgeryDto surgery) {
+    public ResponseEntity<SurgeryDto2> addSurgery(@RequestBody SurgeryDto2 surgery) {
         return new ResponseEntity<>(surgeryService.add(surgery), HttpStatus.CREATED);
     }
 
     @GetMapping("/{surgeryId}")
-    public ResponseEntity<Surgery> getPatient(@PathVariable Integer patientId) throws SurgeryNotFoundException {
+    public ResponseEntity<SurgeryDto> getPatient(@PathVariable Integer patientId) throws SurgeryNotFoundException {
         return ResponseEntity.ok(surgeryService.get(patientId));
     }
 

@@ -37,9 +37,10 @@ public class AddressServiceImpl implements AddressService {
     }
 
     @Override
-    public Address get(Integer id) throws AddressNotFoundException {
-        return addressDao.findById(id).orElseThrow(
-                () -> new AddressNotFoundException(String.format("address with ID, %d, is not found", id)));
+    public AddressDto get(Integer id) throws AddressNotFoundException {
+        return modelMapper.map(addressDao.findById(id).orElseThrow(
+                () -> new AddressNotFoundException(String.format("address with ID, %d, is not found", id))),
+                AddressDto.class);
     }
 
     @Override

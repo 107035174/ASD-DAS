@@ -3,15 +3,15 @@ package edu.miu.cs489.dentalappointment.service;
 import java.util.List;
 
 import edu.miu.cs489.dentalappointment.dto.DentistDto;
+import edu.miu.cs489.dentalappointment.dto.DentistDto2;
 import edu.miu.cs489.dentalappointment.exception.DentistNotFoundException;
-import edu.miu.cs489.dentalappointment.model.Dentist;
 
 public interface DentistService {
-    public DentistDto add(DentistDto dentist);
+    public DentistDto2 add(DentistDto2 dentist);
 
     public List<DentistDto> getAll();
 
-    public Dentist get(Integer id) throws DentistNotFoundException;
+    public DentistDto get(Integer id) throws DentistNotFoundException;
 
     public DentistDto update(Integer id, DentistDto dentist) throws DentistNotFoundException;
 

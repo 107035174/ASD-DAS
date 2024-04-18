@@ -47,9 +47,9 @@ public class SurgeryServiceImpl implements SurgeryService {
         if (temp.isPresent()) {
             Surgery existing = temp.get();
 
-            existing.setName(surgery.name());
-            existing.setPhoneNumber(surgery.phoneNumber());
-            existing.setAddress(modelMapper.map(surgery.address(), Address.class));
+            existing.setName(surgery.getName());
+            existing.setPhoneNumber(surgery.getPhoneNumber());
+            existing.setAddress(modelMapper.map(surgery.getAddress(), Address.class));
 
             surgeryDao.save(existing);
 

@@ -47,11 +47,11 @@ public class DentistServiceImpl implements DentistService {
         if (temp.isPresent()) {
             Dentist existing = temp.get();
 
-            existing.setFirstName(dentist.firstName());
-            existing.setLastName(dentist.lastName());
-            existing.setPhoneNumber(dentist.phoneNumber());
-            existing.setEmail(dentist.email());
-            existing.setSpecialization(dentist.specialization());
+            existing.setFirstName(dentist.getFirstName());
+            existing.setLastName(dentist.getLastName());
+            existing.setPhoneNumber(dentist.getPhoneNumber());
+            existing.setEmail(dentist.getEmail());
+            existing.setSpecialization(dentist.getSpecialization());
 
             dentistDao.save(existing);
 

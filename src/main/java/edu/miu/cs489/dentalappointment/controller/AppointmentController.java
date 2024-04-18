@@ -30,7 +30,7 @@ public class AppointmentController {
     }
 
     @PostMapping("/add")
-    public ResponseEntity<AppointmentDto> addAppointment(@RequestBody AppointmentDto appointment) {
+    public ResponseEntity<AppointmentDto> addAppointment(@RequestBody AppointmentDto2 appointment) {
         return new ResponseEntity<>(appointmentService.add(appointment), HttpStatus.CREATED);
     }
 

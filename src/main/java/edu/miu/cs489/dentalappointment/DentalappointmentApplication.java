@@ -16,7 +16,10 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import edu.miu.cs489.dentalappointment.dao.DentistDao;
 import edu.miu.cs489.dentalappointment.dao.PatientDao;
 import edu.miu.cs489.dentalappointment.dao.SurgeryDao;
-import edu.miu.cs489.dentalappointment.dto.AppointmentDto;
+import edu.miu.cs489.dentalappointment.dto.AppointmentDto2;
+import edu.miu.cs489.dentalappointment.dto.DentistDto2;
+import edu.miu.cs489.dentalappointment.dto.PatientDto2;
+import edu.miu.cs489.dentalappointment.dto.SurgeryDto2;
 import edu.miu.cs489.dentalappointment.model.Dentist;
 import edu.miu.cs489.dentalappointment.model.Patient;
 import edu.miu.cs489.dentalappointment.model.Surgery;
@@ -44,6 +47,10 @@ public class DentalappointmentApplication implements CommandLineRunner {
 				new ArrayList<>());
 		dentist = dentistDao.save(dentist);
 
+		Dentist dentist2 = new Dentist(null, "Elizabeth", "Turner", "9876543210", "elizabeth.turner@example.com",
+				"Periodontics", new ArrayList<>());
+		dentist2 = dentistDao.save(dentist2);
+
 		Patient patient = new Patient(null, "Jane", "Doe", "9876543210", "jane.doe@example.com", null, null,
 				new ArrayList<>());
 		patient = patientDao.save(patient);
@@ -52,8 +59,9 @@ public class DentalappointmentApplication implements CommandLineRunner {
 		surgery = surgeryDao.save(surgery);
 
 		LocalDateTime now = LocalDateTime.now();
-        AppointmentDto newAppointment = new AppointmentDto(null, now, now.plusDays(1));
-        appointmentService.add(newAppointment);
+		AppointmentDto2 newAppointment = new AppointmentDto2(null, now, now.plusDays(1), new DentistDto2(1),
+				new PatientDto2(1), new SurgeryDto2(1));
+		appointmentService.add(newAppointment);
 
 		System.out.println("Loaded data into database");
 	}

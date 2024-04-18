@@ -20,8 +20,8 @@ public class Appointment {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer appointmentId;
-    private LocalDateTime createdDate = LocalDateTime.now();
-    private LocalDateTime scheduledDate;
+    private LocalDateTime createdDateTime;
+    private LocalDateTime scheduledDateTime;
     @ManyToOne
     @JoinColumn(name = "patientId")
     private Patient patient;

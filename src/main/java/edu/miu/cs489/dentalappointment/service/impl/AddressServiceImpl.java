@@ -47,10 +47,11 @@ public class AddressServiceImpl implements AddressService {
         Optional<Address> temp = addressDao.findById(id);
         if (temp.isPresent()) {
             Address existing = temp.get();
-            existing.setCity(address.city());
-            existing.setState(address.state());
-            existing.setStreet(address.street());
-            existing.setZip(address.zip());
+            existing.setCity(address.getCity());
+            existing.setState(address.getState());
+            existing.setStreet(address.getStreet());
+            existing.setZip(address.getZip());
+
             addressDao.save(existing);
 
             return modelMapper.map(existing, AddressDto.class);

@@ -8,7 +8,7 @@ import edu.miu.cs489.dentalappointment.exception.AppointmentNotFoundException;
 import edu.miu.cs489.dentalappointment.model.Appointment;
 
 public interface AppointmentService {
-    public AppointmentDto add(AppointmentDto appointment);
+    public AppointmentDto add(AppointmentDto2 appointment);
 
     public List<AppointmentDto> getAll();
 

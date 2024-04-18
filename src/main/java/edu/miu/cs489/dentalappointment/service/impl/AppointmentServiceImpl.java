@@ -27,13 +27,17 @@ public class AppointmentServiceImpl implements AppointmentService {
     private SurgeryDao surgeryDao;
     private ModelMapper modelMapper;
 
-    AppointmentServiceImpl(AppointmentDao appointmentDao, ModelMapper modelMapper) {
+    public AppointmentServiceImpl(AppointmentDao appointmentDao, DentistDao dentistDao, PatientDao patientDao,
+            SurgeryDao surgeryDao, ModelMapper modelMapper) {
         this.appointmentDao = appointmentDao;
+        this.dentistDao = dentistDao;
+        this.patientDao = patientDao;
+        this.surgeryDao = surgeryDao;
         this.modelMapper = modelMapper;
     }
 
-    public AppointmentDto add(AppointmentDto appointment) {
-        Appointment savedAppointment = modelMapper.map(appointment, Appointment.class);
+    public AppointmentDto add(AppointmentDto2 appointment) {
+        Appointment savedAppointment = appointmentDao.save(modelMapper.map(appointment, Appointment.class));
         return modelMapper.map(savedAppointment, AppointmentDto.class);
     }
 
@@ -54,9 +58,9 @@ public class AppointmentServiceImpl implements AppointmentService {
         Optional<Appointment> temp = appointmentDao.findById(id);
         if (temp.isPresent()) {
             Appointment existing = temp.get();
-            Integer dentistId = appointment.dentist().dentistId();
-            Integer patientId = appointment.patient().patientId();
-            Integer surgeryId = appointment.surgery().surgeryId();
+            Integer dentistId = appointment.getDentist().getDentistId();
+            Integer patientId = appointment.getPatient().getPatientId();
+            Integer surgeryId = appointment.getSurgery().getSurgeryId();
 
             Dentist dentist = dentistDao.findById(dentistId)
                     .orElseThrow(() -> new RuntimeException(
@@ -68,7 +72,7 @@ public class AppointmentServiceImpl implements AppointmentService {
                     .orElseThrow(() -> new RuntimeException(
                             String.format("Surgery with ID, %d, is not found", surgeryId)));
 
-            existing.setScheduledDate(appointment.scheduledDateTime());
+            existing.setScheduledDateTime(appointment.getScheduledDateTime());
             existing.setDentist(dentist);
             existing.setPatient(patient);
             existing.setSurgery(surgery);

@@ -2,12 +2,21 @@ package edu.miu.cs489.dentalappointment.dto;
 
 import java.util.List;
 
-public record DentistDto(
-        Integer dentistId,
-        String firstName,
-        String lastName,
-        String phoneNumber,
-        String email,
-        String specialization,
-        List<AppointmentDto> appointments) {
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
+public class DentistDto {
+        private Integer dentistId;
+        private String firstName;
+        private String lastName;
+        private String phoneNumber;
+        private String email;
+        private String specialization;
+        private List<AppointmentDto> appointments;
 }

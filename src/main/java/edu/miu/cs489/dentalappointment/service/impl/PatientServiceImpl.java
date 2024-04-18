@@ -49,12 +49,12 @@ public class PatientServiceImpl implements PatientService {
         if (temp.isPresent()) {
             Patient existing = temp.get();
 
-            existing.setFirstName(patient.firstName());
-            existing.setLastName(patient.lastName());
-            existing.setMailingAddress(modelMapper.map(patient.mailingAddress(), Address.class));
-            existing.setPhoneNumber(patient.phoneNumber());
-            existing.setEmail(patient.email());
-            existing.setDob(patient.dob());
+            existing.setFirstName(patient.getFirstName());
+            existing.setLastName(patient.getLastName());
+            existing.setMailingAddress(modelMapper.map(patient.getMailingAddress(), Address.class));
+            existing.setPhoneNumber(patient.getPhoneNumber());
+            existing.setEmail(patient.getEmail());
+            existing.setDob(patient.getDob());
 
             patientDao.save(existing);
 

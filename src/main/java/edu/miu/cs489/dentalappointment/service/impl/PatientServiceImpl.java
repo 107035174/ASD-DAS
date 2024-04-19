@@ -15,6 +15,7 @@ import edu.miu.cs489.dentalappointment.exception.PatientNotFoundException;
 import edu.miu.cs489.dentalappointment.model.Address;
 import edu.miu.cs489.dentalappointment.model.Patient;
 import edu.miu.cs489.dentalappointment.service.PatientService;
+import jakarta.transaction.Transactional;
 
 @Service
 public class PatientServiceImpl implements PatientService {
@@ -28,6 +29,7 @@ public class PatientServiceImpl implements PatientService {
         this.addressDao = addressDao;
     }
 
+    @Transactional
     @Override
     public PatientDto2 add(PatientDto2 patient) {
         Address address = addressDao.save(modelMapper.map(patient.getMailingAddress(), Address.class));
@@ -51,6 +53,7 @@ public class PatientServiceImpl implements PatientService {
                 PatientDto.class);
     }
 
+    @Transactional
     @Override
     public PatientDto update(Integer id, PatientDto patient) throws PatientNotFoundException {
         Optional<Patient> temp = patientDao.findById(id);
@@ -71,6 +74,7 @@ public class PatientServiceImpl implements PatientService {
             throw new PatientNotFoundException(String.format("Patient with ID, %d, is not found", id));
     }
 
+    @Transactional
     @Override
     public void delete(Integer id) {
         patientDao.deleteById(id);

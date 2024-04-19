@@ -18,6 +18,7 @@ import edu.miu.cs489.dentalappointment.model.Dentist;
 import edu.miu.cs489.dentalappointment.model.Patient;
 import edu.miu.cs489.dentalappointment.model.Surgery;
 import edu.miu.cs489.dentalappointment.service.AppointmentService;
+import jakarta.transaction.Transactional;
 
 @Service
 public class AppointmentServiceImpl implements AppointmentService {
@@ -36,46 +37,60 @@ public class AppointmentServiceImpl implements AppointmentService {
         this.modelMapper = modelMapper;
     }
 
+    @Transactional
+    @Override
     public AppointmentDto add(AppointmentDto2 appointment) {
         Appointment savedAppointment = appointmentDao.save(modelMapper.map(appointment, Appointment.class));
         return modelMapper.map(savedAppointment, AppointmentDto.class);
     }
 
+    @Override
     public List<AppointmentDto> getAll() {
         return appointmentDao.findAll().stream()
                 .map(app -> modelMapper.map(app, AppointmentDto.class))
                 .toList();
     }
 
+    @Override
     public Appointment get(Integer id) throws AppointmentNotFoundException {
         return appointmentDao.findById(id)
                 .orElseThrow(() -> new AppointmentNotFoundException(
                         String.format("Appointment with ID, %d, is not found", id)));
     }
 
+    @Transactional
+    @Override
     public AppointmentDto2 update(Integer id, AppointmentDto2 appointment)
             throws AppointmentNotFoundException, RuntimeException {
         Optional<Appointment> temp = appointmentDao.findById(id);
         if (temp.isPresent()) {
             Appointment existing = temp.get();
-            Integer dentistId = appointment.getDentist().getDentistId();
-            Integer patientId = appointment.getPatient().getPatientId();
-            Integer surgeryId = appointment.getSurgery().getSurgeryId();
 
-            Dentist dentist = dentistDao.findById(dentistId)
-                    .orElseThrow(() -> new RuntimeException(
-                            String.format("Dentist with ID, %d, is not found", dentistId)));
-            Patient patient = patientDao.findById(patientId)
-                    .orElseThrow(() -> new RuntimeException(
-                            String.format("Patient with ID, %d, is not found", patientId)));
-            Surgery surgery = surgeryDao.findById(surgeryId)
-                    .orElseThrow(() -> new RuntimeException(
-                            String.format("Surgery with ID, %d, is not found", surgeryId)));
+            if (appointment.getDentist() != null) {
+                Integer dentistId = appointment.getDentist().getDentistId();
+                Dentist dentist = dentistDao.findById(dentistId)
+                        .orElseThrow(() -> new RuntimeException(
+                                String.format("Dentist with ID, %d, is not found", dentistId)));
+                existing.setDentist(dentist);
+            }
+
+            if (appointment.getPatient() != null) {
+                Integer patientId = appointment.getPatient().getPatientId();
+                Patient patient = patientDao.findById(patientId)
+                        .orElseThrow(() -> new RuntimeException(
+                                String.format("Patient with ID, %d, is not found", patientId)));
+                existing.setPatient(patient);
+            }
+
+            if (appointment.getSurgery() != null) {
+                Integer surgeryId = appointment.getSurgery().getSurgeryId();
+                Surgery surgery = surgeryDao.findById(surgeryId)
+                        .orElseThrow(() -> new RuntimeException(
+                                String.format("Surgery with ID, %d, is not found", surgeryId)));
+                existing.setSurgery(surgery);
+            }
 
             existing.setScheduledDateTime(appointment.getScheduledDateTime());
-            existing.setDentist(dentist);
-            existing.setPatient(patient);
-            existing.setSurgery(surgery);
 
             appointmentDao.save(existing);
 
@@ -85,6 +100,8 @@ public class AppointmentServiceImpl implements AppointmentService {
         }
     }
 
+    @Transactional
+    @Override
     public void delete(Integer id) {
         appointmentDao.deleteById(id);
     }

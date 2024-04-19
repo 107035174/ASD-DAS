@@ -13,6 +13,7 @@ import edu.miu.cs489.dentalappointment.exception.SurgeryNotFoundException;
 import edu.miu.cs489.dentalappointment.model.Address;
 import edu.miu.cs489.dentalappointment.model.Surgery;
 import edu.miu.cs489.dentalappointment.service.SurgeryService;
+import jakarta.transaction.Transactional;
 
 @Service
 public class SurgeryServiceImpl implements SurgeryService {
@@ -24,6 +25,7 @@ public class SurgeryServiceImpl implements SurgeryService {
         this.modelMapper = modelMapper;
     }
 
+    @Transactional
     @Override
     public SurgeryDto2 add(SurgeryDto2 surgery) {
         Address address = modelMapper.map(surgery.getAddress(), Address.class);
@@ -46,6 +48,7 @@ public class SurgeryServiceImpl implements SurgeryService {
                 SurgeryDto.class);
     }
 
+    @Transactional
     @Override
     public SurgeryDto update(Integer id, SurgeryDto surgery) throws SurgeryNotFoundException {
         Optional<Surgery> temp = surgeryDao.findById(id);
@@ -63,6 +66,7 @@ public class SurgeryServiceImpl implements SurgeryService {
             throw new SurgeryNotFoundException(String.format("Surgery with ID, %d, is not found", id));
     }
 
+    @Transactional
     @Override
     public void delete(Integer id) {
         surgeryDao.deleteById(id);

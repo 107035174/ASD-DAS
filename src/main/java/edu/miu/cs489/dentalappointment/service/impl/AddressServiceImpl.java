@@ -12,6 +12,7 @@ import edu.miu.cs489.dentalappointment.dto.AddressDto2;
 import edu.miu.cs489.dentalappointment.exception.AddressNotFoundException;
 import edu.miu.cs489.dentalappointment.model.Address;
 import edu.miu.cs489.dentalappointment.service.AddressService;
+import jakarta.transaction.Transactional;
 
 @Service
 public class AddressServiceImpl implements AddressService {
@@ -23,6 +24,7 @@ public class AddressServiceImpl implements AddressService {
         this.modelMapper = modelMapper;
     }
 
+    @Transactional
     @Override
     public AddressDto add(AddressDto address) {
         Address savedAddress = addressDao.save(modelMapper.map(address, Address.class));
@@ -44,6 +46,7 @@ public class AddressServiceImpl implements AddressService {
                 AddressDto2.class);
     }
 
+    @Transactional
     @Override
     public AddressDto update(Integer id, AddressDto address) throws AddressNotFoundException {
         Optional<Address> temp = addressDao.findById(id);
@@ -62,6 +65,7 @@ public class AddressServiceImpl implements AddressService {
         }
     }
 
+    @Transactional
     @Override
     public void delete(Integer id) {
         addressDao.deleteById(id);

@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import edu.miu.cs489.dentalappointment.dao.AddressDao;
 import edu.miu.cs489.dentalappointment.dto.AddressDto;
+import edu.miu.cs489.dentalappointment.dto.AddressDto2;
 import edu.miu.cs489.dentalappointment.exception.AddressNotFoundException;
 import edu.miu.cs489.dentalappointment.model.Address;
 import edu.miu.cs489.dentalappointment.service.AddressService;
@@ -29,18 +30,18 @@ public class AddressServiceImpl implements AddressService {
     }
 
     @Override
-    public List<AddressDto> getAll() {
+    public List<AddressDto2> getAll() {
         return addressDao.findAll()
                 .stream()
-                .map(a -> modelMapper.map(a, AddressDto.class))
+                .map(a -> modelMapper.map(a, AddressDto2.class))
                 .toList();
     }
 
     @Override
-    public AddressDto get(Integer id) throws AddressNotFoundException {
+    public AddressDto2 get(Integer id) throws AddressNotFoundException {
         return modelMapper.map(addressDao.findById(id).orElseThrow(
                 () -> new AddressNotFoundException(String.format("address with ID, %d, is not found", id))),
-                AddressDto.class);
+                AddressDto2.class);
     }
 
     @Override

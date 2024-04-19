@@ -7,6 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
 
 import edu.miu.cs489.dentalappointment.dto.AddressDto;
+import edu.miu.cs489.dentalappointment.dto.AddressDto2;
 import edu.miu.cs489.dentalappointment.exception.AddressNotFoundException;
 import edu.miu.cs489.dentalappointment.service.AddressService;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -32,12 +33,12 @@ public class AddressController {
     }
 
     @GetMapping("/{addressId}")
-    public ResponseEntity<AddressDto> getAddress(@PathVariable Integer addressId) throws AddressNotFoundException {
+    public ResponseEntity<AddressDto2> getAddress(@PathVariable Integer addressId) throws AddressNotFoundException {
         return ResponseEntity.ok(addressService.get(addressId));
     }
 
     @GetMapping("/ls")
-    public ResponseEntity<List<AddressDto>> getAllAddress() {
+    public ResponseEntity<List<AddressDto2>> getAllAddress() {
         return ResponseEntity.ok(addressService.getAll());
     }
 

@@ -9,7 +9,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
+import edu.miu.cs489.dentalappointment.dao.RoleDao;
 import edu.miu.cs489.dentalappointment.dto.AddressDto;
 import edu.miu.cs489.dentalappointment.dto.AppointmentDto2;
 import edu.miu.cs489.dentalappointment.dto.DentistDto;
@@ -18,6 +20,7 @@ import edu.miu.cs489.dentalappointment.dto.PatientDto;
 import edu.miu.cs489.dentalappointment.dto.PatientDto2;
 import edu.miu.cs489.dentalappointment.dto.SurgeryDto;
 import edu.miu.cs489.dentalappointment.dto.SurgeryDto2;
+import edu.miu.cs489.dentalappointment.model.Role;
 import edu.miu.cs489.dentalappointment.service.AddressService;
 import edu.miu.cs489.dentalappointment.service.DentistService;
 import edu.miu.cs489.dentalappointment.service.PatientService;
@@ -38,6 +41,10 @@ public class DentalappointmentApplication implements CommandLineRunner {
 	private SurgeryService surgeryService;
 	@Autowired
 	private ModelMapper modelMapper;
+	@Autowired
+	private RoleDao roleDao;
+	@Autowired
+	private PasswordEncoder passwordEncoder;
 
 	public static void main(String[] args) {
 		SpringApplication.run(DentalappointmentApplication.class, args);
@@ -46,6 +53,9 @@ public class DentalappointmentApplication implements CommandLineRunner {
 
 	@Override
 	public void run(String... args) throws Exception {
+
+		createRoleIfNotFound("PATIENT");
+		createRoleIfNotFound("DENTIST");
 
 		AddressDto address1 = new AddressDto(null, "123 Maple St", "Springfield", "IL", "62704");
 		address1 = addressService.add(address1);
@@ -56,19 +66,26 @@ public class DentalappointmentApplication implements CommandLineRunner {
 		AddressDto address3 = new AddressDto(null, "789 Pine St", "Capital City", "TX", "73301");
 		address3 = addressService.add(address3);
 
-		DentistDto2 dentist = new DentistDto2(null, "John", "Doe", "1234567890", "john.doe@example.com", "Orthodontics",
+		DentistDto2 dentist = new DentistDto2(null, "John", passwordEncoder.encode("123"), "John", "Doe", "1234567890",
+				"john.doe@example.com",
+				"Orthodontics",
 				new ArrayList<>());
 		dentist = dentistService.add(dentist);
 
-		DentistDto2 dentist2 = new DentistDto2(null, "Elizabeth", "Turner", "9876543210",
+		DentistDto2 dentist2 = new DentistDto2(null, "Eliz", passwordEncoder.encode("123"), "Elizabeth", "Turner",
+				"9876543210",
 				"elizabeth.turner@example.com", "Periodontics", new ArrayList<>());
 		dentist2 = dentistService.add(dentist2);
 
-		PatientDto2 patient2 = new PatientDto2(null, "Alice", "Smith", "1234567890", "alice.smith@example.com",
+		PatientDto2 patient2 = new PatientDto2(null, "Alice", passwordEncoder.encode("123"), "Alice", "Smith",
+				"1234567890",
+				"alice.smith@example.com",
 				address1, null, new ArrayList<>());
 		patient2 = patientService.add(patient2);
 
-		PatientDto2 patient = new PatientDto2(null, "Jane", "Doe", "9876543210", "jane.doe@example.com", address2, null,
+		PatientDto2 patient = new PatientDto2(null, "Jane", passwordEncoder.encode("123"), "Jane", "Doe", "9876543210",
+				"jane.doe@example.com",
+				address2, null,
 				new ArrayList<>());
 		patient = patientService.add(patient);
 
@@ -87,4 +104,11 @@ public class DentalappointmentApplication implements CommandLineRunner {
 
 	}
 
+	private void createRoleIfNotFound(String name) {
+		roleDao.findByRoleName(name).orElseGet(() -> {
+			Role role = new Role();
+			role.setRoleName(name);
+			return roleDao.save(role);
+		});
+	}
 }

@@ -10,7 +10,9 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 public class DentistDto {
-        private Integer dentistId;
+        private Integer userId;
+        private String username;
+        private String password;
         private String firstName;
         private String lastName;
         private String phoneNumber;

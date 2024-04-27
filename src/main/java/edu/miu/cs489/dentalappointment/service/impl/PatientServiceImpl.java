@@ -1,5 +1,6 @@
 package edu.miu.cs489.dentalappointment.service.impl;
 
+import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
@@ -9,11 +10,13 @@ import org.springframework.stereotype.Service;
 
 import edu.miu.cs489.dentalappointment.dao.AddressDao;
 import edu.miu.cs489.dentalappointment.dao.PatientDao;
+import edu.miu.cs489.dentalappointment.dao.RoleDao;
 import edu.miu.cs489.dentalappointment.dto.PatientDto;
 import edu.miu.cs489.dentalappointment.dto.PatientDto2;
 import edu.miu.cs489.dentalappointment.exception.PatientNotFoundException;
 import edu.miu.cs489.dentalappointment.model.Address;
 import edu.miu.cs489.dentalappointment.model.Patient;
+import edu.miu.cs489.dentalappointment.model.Role;
 import edu.miu.cs489.dentalappointment.service.PatientService;
 import jakarta.transaction.Transactional;
 
@@ -21,19 +24,25 @@ import jakarta.transaction.Transactional;
 public class PatientServiceImpl implements PatientService {
     private PatientDao patientDao;
     private AddressDao addressDao;
+    private RoleDao roleDao;
     private ModelMapper modelMapper;
 
-    public PatientServiceImpl(PatientDao patientDao, ModelMapper modelMapper, AddressDao addressDao) {
+    public PatientServiceImpl(PatientDao patientDao, ModelMapper modelMapper, AddressDao addressDao, RoleDao roleDao) {
         this.patientDao = patientDao;
         this.modelMapper = modelMapper;
         this.addressDao = addressDao;
+        this.roleDao = roleDao;
     }
 
     @Transactional
     @Override
     public PatientDto2 add(PatientDto2 patient) {
+        Role patientRole = roleDao.findByRoleName("PATIENT")
+                .orElseThrow(() -> new RuntimeException("Patient role not found"));
+
         Address address = addressDao.save(modelMapper.map(patient.getMailingAddress(), Address.class));
         Patient savedPatient = modelMapper.map(patient, Patient.class);
+        savedPatient.setRoles(Arrays.asList(patientRole));
         savedPatient.setMailingAddress(address);
         patientDao.save(savedPatient);
         return modelMapper.map(savedPatient, PatientDto2.class);

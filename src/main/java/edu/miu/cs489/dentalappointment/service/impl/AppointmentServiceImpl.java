@@ -67,7 +67,7 @@ public class AppointmentServiceImpl implements AppointmentService {
             Appointment existing = temp.get();
 
             if (appointment.getDentist() != null) {
-                Integer dentistId = appointment.getDentist().getDentistId();
+                Integer dentistId = appointment.getDentist().getUserId();
                 Dentist dentist = dentistDao.findById(dentistId)
                         .orElseThrow(() -> new RuntimeException(
                                 String.format("Dentist with ID, %d, is not found", dentistId)));
@@ -75,7 +75,7 @@ public class AppointmentServiceImpl implements AppointmentService {
             }
 
             if (appointment.getPatient() != null) {
-                Integer patientId = appointment.getPatient().getPatientId();
+                Integer patientId = appointment.getPatient().getUserId();
                 Patient patient = patientDao.findById(patientId)
                         .orElseThrow(() -> new RuntimeException(
                                 String.format("Patient with ID, %d, is not found", patientId)));

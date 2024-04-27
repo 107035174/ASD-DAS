@@ -13,7 +13,9 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 public class PatientDto2 {
-    private Integer patientId;
+    private Integer userId;
+    private String username;
+    private String password;
     private String firstName;
     private String lastName;
     private String phoneNumber;
